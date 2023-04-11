@@ -1,0 +1,23 @@
+{
+  "map" : [
+    {
+      "type": "single_note",
+      "base": [153, 50],
+      "trans": [1, 1]
+    },
+
+    {
+      "type": "single_note",
+      "base": [153, 51],
+      "trans": [1, 2]
+    },
+
+    {
+      "type": "through",
+      "range_low_base": [153, 0],
+      "range_high_base": [153, 49],
+
+      "trans_at": [2, 0]
+    }
+  ]
+}
