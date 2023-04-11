@@ -4,6 +4,8 @@
 
 #include "rtmidi/RtMidi.h"
 
+#include "MidiMapper.h"
+
 int main() {
     std::unique_ptr<RtMidiIn> midiin = std::make_unique<RtMidiIn>();
     std::unique_ptr<RtMidiOut> midiout = std::make_unique<RtMidiOut>();
@@ -38,14 +40,27 @@ int main() {
     midiin->openPort(inp_select);
     midiout->openPort(outp_select);
 
+    MidiMapper mapper{};
+    mapper.LoadMappingConfig("testmapping/ddjxp2.json");
+
     while(true) {
         std::vector<uint8_t> data;
         midiin->getMessage(&data);
 
-        if(data.size() > 0) {
+        if(data.size() >= 3) {
+            MidiNote in = {
+                    .channel = data[0],
+                    .note = data[1],
+                    .velocity = data[2]
+            };
+
+            MidiNote mapped = mapper.MapNote(in);
+
             for (int i = 0; i < data.size(); i++) {
                 std::cout << (int)data[i] << " ";
             }
+
+            std::cout << " -> " << (int)mapped.channel << " " << (int)mapped.note << " " << (int)mapped.velocity;
             std::cout << std::endl;
         }
     }

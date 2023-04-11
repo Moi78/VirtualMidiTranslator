@@ -25,9 +25,12 @@ public:
     MidiNote MapNote(const MidiNote& noteIn);
 
     void AddMappedNote(const MidiNote& noteBase, const MidiNote& translated);
-    void LoadMappingConfig(std::string& filepath);
+    void LoadMappingConfig(std::string filepath);
 
 private:
+    void CreateSingleNoteMap(Json::Value data);
+    void CreateThroughNoteMap(Json::Value data);
+
     std::unordered_map<uint32_t, MidiNote> m_mapping;
 };
 
