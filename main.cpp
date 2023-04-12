@@ -6,7 +6,22 @@
 
 #include "MidiMapper.h"
 
-int main() {
+int main(int argc, char* argv[]) {
+    // Checking CLI arguments
+    std::string confFilePath;
+    if(argc < 3) {
+        std::cerr << "ERROR: No configuration provided." << std::endl;
+        exit(-1);
+    } else {
+        if(std::string(argv[1]) == "--config") {
+            confFilePath = std::string(argv[2]);
+        } else {
+            std::cerr << "ERROR: Unknown argument " << std::string(argv[1]) << "." << std::endl;
+            exit(-1);
+        }
+    }
+
+    // Opening MIDI Port
     std::unique_ptr<RtMidiIn> midiin = std::make_unique<RtMidiIn>();
     std::unique_ptr<RtMidiOut> midiout = std::make_unique<RtMidiOut>();
     unsigned int inp_select = 0, outp_select = 0;
@@ -31,6 +46,8 @@ int main() {
         portName_out = midiout->getPortName(i);
         std::cout << "[MIDI OUTPUT] Port no " << i << " : " << portName_out << std::endl;
     }
+    std::cout << "Output port [0]: ";
+    std::cin >> outp_select;
 
     if(outp_select >= nbPort_out) {
         std::cerr << "ERROR: This port does not exists" << std::endl;
@@ -40,8 +57,9 @@ int main() {
     midiin->openPort(inp_select);
     midiout->openPort(outp_select);
 
+    // Mapping midi notes
     MidiMapper mapper{};
-    mapper.LoadMappingConfig("testmapping/ddjxp2.json");
+    mapper.LoadMappingConfig(confFilePath);
 
     while(true) {
         std::vector<uint8_t> data;
@@ -56,12 +74,11 @@ int main() {
 
             MidiNote mapped = mapper.MapNote(in);
 
-            for (int i = 0; i < data.size(); i++) {
-                std::cout << (int)data[i] << " ";
-            }
-
-            std::cout << " -> " << (int)mapped.channel << " " << (int)mapped.note << " " << (int)mapped.velocity;
+            std::cout << (int)(data[0] & 0x0F) << " " << (int)data[1] << " " << (int)data[2];
+            std::cout << " -> " << (int)(mapped.channel & 0x0F) << " " << (int)mapped.note << " " << (int)mapped.velocity;
             std::cout << std::endl;
+
+            midiout->sendMessage((unsigned char*)&mapped, sizeof(mapped));
         }
     }
 

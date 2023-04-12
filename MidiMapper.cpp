@@ -86,7 +86,7 @@ void MidiMapper::CreateThroughNoteMap(Json::Value data) {
             };
 
             MidiNote trans = {
-                    .channel = (uint8_t)(c + t_baseChannel),
+                    .channel = (uint8_t)((c + t_baseChannel) | NOTE_ON),
                     .note = (uint8_t)(n + t_baseNote),
                     .velocity = 0
             };

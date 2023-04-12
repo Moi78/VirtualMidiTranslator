@@ -9,6 +9,15 @@
 
 #include "jsoncpp/json/json.h"
 
+#define NOTE_OFF 0x80
+#define NOTE_ON 0x90
+#define POLYPHONIC_PRESS 0xA0
+#define CONTROLE_CHANGE 0xB0
+#define PROGRAM_CHANGE 0xC0
+#define CHANNEL_PRESSURE 0xD0
+#define PITCH_BEND 0xE0
+#define SYSTEM_MESSAGE 0xF0
+
 struct MidiNote {
     uint8_t channel;
     uint8_t note;
