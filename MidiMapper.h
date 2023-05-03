@@ -31,7 +31,7 @@ public:
     MidiMapper() = default;
     ~MidiMapper() = default;
 
-    MidiNote MapNote(const MidiNote& noteIn);
+    MidiNote MapNote(MidiNote& noteIn);
 
     void AddMappedNote(const MidiNote& noteBase, const MidiNote& translated);
     void LoadMappingConfig(std::string filepath);

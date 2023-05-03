@@ -42,20 +42,20 @@ Configurations are written in JSON. The mapping configuration is put in a `map` 
   "map" : [
     {
       "type": "single_note",
-      "base": [153, 50],
+      "base": [9, 50],
       "trans": [1, 1]
     },
 
     {
       "type": "single_note",
-      "base": [153, 51],
+      "base": [9, 51],
       "trans": [1, 2]
     },
 
     {
       "type": "through",
-      "range_low_base": [153, 0],
-      "range_high_base": [155, 49],
+      "range_low_base": [5, 0],
+      "range_high_base": [8, 49],
 
       "trans_at": [2, 0]
     }
@@ -63,4 +63,4 @@ Configurations are written in JSON. The mapping configuration is put in a `map` 
 }
 ```
 
-In this example, note `[channel = 153, note = 50]` will be mapped to `[channel = 1, note = 1]`, note `[channel = 153, note = 51]` will be mapped to `[channel = 1, note = 2]` and the range of notes from `[channel = 153, note = 0]` through `[channel = 155, note = 49]` will be translated at `[channel = 2, note = 0]`, this means that, for instance, the note `[channel = 154, note = 20]` will be translated to `[channel = 3, note = 20]`.
+In this example, note `[channel = 9, note = 50]` will be mapped to `[channel = 1, note = 1]`, note `[channel = 9, note = 51]` will be mapped to `[channel = 1, note = 2]` and the range of notes from `[channel = 5, note = 0]` through `[channel = 8, note = 49]` will be translated at `[channel = 2, note = 0]`, this means that, for instance, the note `[channel = 6, note = 20]` will be translated to `[channel = 3, note = 20]`.

@@ -1,0 +1,17 @@
+{
+  "map": [
+    {
+      "type": "through",
+      "range_low_base": [5, 9],
+      "range_high_base": [5, 96],
+
+      "trans_at": [0, 0]
+    },
+
+    {
+      "type": "single_note",
+      "base": [5, 1],
+      "trans": [0, 1]
+    }
+  ]
+}

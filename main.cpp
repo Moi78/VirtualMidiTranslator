@@ -32,7 +32,7 @@ int main(int argc, char* argv[]) {
         portName = midiin->getPortName(i);
         std::cout << "[MIDI INPUT] Port no " << i << " : " << portName << std::endl;
     }
-    std::cout << "Input port [0]: ";
+    std::cout << "Input port : ";
     std::cin >> inp_select;
 
     if(inp_select >= nbPorts) {
@@ -46,7 +46,7 @@ int main(int argc, char* argv[]) {
         portName_out = midiout->getPortName(i);
         std::cout << "[MIDI OUTPUT] Port no " << i << " : " << portName_out << std::endl;
     }
-    std::cout << "Output port [0]: ";
+    std::cout << "Output port : ";
     std::cin >> outp_select;
 
     if(outp_select >= nbPort_out) {
@@ -67,7 +67,7 @@ int main(int argc, char* argv[]) {
 
         if(data.size() >= 3) {
             MidiNote in = {
-                    .channel = data[0],
+                    .channel = (uint8_t)(data[0] & 0x0F),
                     .note = data[1],
                     .velocity = data[2]
             };

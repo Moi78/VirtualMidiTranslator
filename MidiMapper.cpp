@@ -96,14 +96,16 @@ void MidiMapper::CreateThroughNoteMap(Json::Value data) {
     }
 }
 
-MidiNote MidiMapper::MapNote(const MidiNote &noteIn) {
+MidiNote MidiMapper::MapNote(MidiNote &noteIn) {
     uint32_t h = noteIn.hash();
 
     if(!m_mapping.contains(h)) {
+        noteIn.channel |= NOTE_ON;
         return noteIn;
     }
 
     MidiNote mapped = m_mapping[h];
+    mapped.channel |= NOTE_ON;
     mapped.velocity = noteIn.velocity;
 
     return mapped;
