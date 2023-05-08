@@ -1,0 +1,43 @@
+{
+  "map": [
+    {
+      "type": "through",
+      "range_low_base": [9, 0],
+      "range_high_base": [9, 15],
+
+      "trans_at": [0, 2]
+    },
+
+    {
+      "type": "through",
+      "range_low_base": [7, 0],
+      "range_high_base": [7, 15],
+
+      "trans_at": [0, 18]
+    },
+
+    {
+      "type": "through_note_sink",
+      "range_low": [4, 34],
+      "range_high": [5, 36]
+    },
+
+    {
+      "type": "through_note_sink",
+      "range_low": [4, 2],
+      "range_high": [5, 3]
+    },
+
+    {
+      "type": "single_note",
+      "base": [5, 4],
+      "trans": [0, 0]
+    },
+
+    {
+      "type": "single_note",
+      "base": [4, 4],
+      "trans": [0, 1]
+    }
+  ]
+}

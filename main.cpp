@@ -72,13 +72,18 @@ int main(int argc, char* argv[]) {
                     .velocity = data[2]
             };
 
-            MidiNote mapped = mapper.MapNote(in);
+            if(!mapper.IsNoteSinked(in)) {
+                MidiNote mapped = mapper.MapNote(in);
 
-            std::cout << (int)(data[0] & 0x0F) << " " << (int)data[1] << " " << (int)data[2];
-            std::cout << " -> " << (int)(mapped.channel & 0x0F) << " " << (int)mapped.note << " " << (int)mapped.velocity;
-            std::cout << std::endl;
+                std::cout << (int) (data[0] & 0x0F) << " " << (int) data[1] << " " << (int) data[2];
+                std::cout << " -> " << (int) (mapped.channel & 0x0F) << " " << (int) mapped.note << " "
+                          << (int) mapped.velocity;
+                std::cout << std::endl;
 
-            midiout->sendMessage((unsigned char*)&mapped, sizeof(mapped));
+                midiout->sendMessage((unsigned char *) &mapped, sizeof(mapped));
+            } else {
+                std::cout << "Sinked " << (int) (data[0] & 0x0F) << " " << (int) data[1] << " " << (int) data[2] << std::endl;
+            }
         }
     }
 

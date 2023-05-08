@@ -25,7 +25,7 @@ Configurations are written in JSON. The mapping configuration is put in a `map` 
   "trans": [translated_channel, translated_note]
 }
 ```
-* Through notes. It translates a range of notes to another range. Mapped notes are computed using the following fomrula : `[channel = abs(channel_a - channel_b) + translated_channel + channel_x, note = note_x + translated_note]`
+* Through notes. It translates a range of notes to another range. Mapped notes are computed using the following formula : `[channel = abs(channel_a - channel_b) + translated_channel + channel_x, note = note_x + translated_note]`
 ```json
 {
   "type": "through",
@@ -33,6 +33,21 @@ Configurations are written in JSON. The mapping configuration is put in a `map` 
   "range_high_base": [channel_b, note_b],
   
   "trans_at": [translated_channel, translated_note]
+}
+```
+* Single note sinks. It blocks a midi note.
+```json
+{
+  "type": "single_note_sink",
+  "note": [channel, note]
+}
+```
+* Through note sinks. It blocks a range of notes. The same formula as through notes is used.
+```json
+{
+  "type": "through_note_sink",
+  "range_low": [channel, note],
+  "range_high": [channel, note]
 }
 ```
 

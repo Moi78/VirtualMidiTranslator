@@ -40,12 +40,17 @@ void MidiMapper::LoadMappingConfig(std::string filepath) {
             CreateSingleNoteMap(n);
         } else if(n["type"].asString() == "through") {
             CreateThroughNoteMap(n);
+        } else if(n["type"].asString() == "single_note_sink") {
+            CreateSingleNoteSink(n);
+        } else if(n["type"].asString() == "through_note_sink") {
+            CreateThroughNoteSink(n);
         } else {
             std::cerr << "Unkown mapping type." << std::endl;
         }
     }
 
     std::cout << "INFO: Mapped " << m_mapping.size() << " notes" << std::endl;
+    std::cout << "INFO Sinking " << m_sinked_notes.size() << " notes" << std::endl;
 }
 
 void MidiMapper::CreateSingleNoteMap(Json::Value data) {
@@ -96,6 +101,16 @@ void MidiMapper::CreateThroughNoteMap(Json::Value data) {
     }
 }
 
+void MidiMapper::CreateSingleNoteSink(Json::Value data) {
+    MidiNote sinked = {
+            .channel = (uint8_t)data["note"][0].asUInt(),
+            .note = (uint8_t)data["note"][1].asUInt(),
+            .velocity = 0
+    };
+
+    AddSinkedNote(sinked);
+}
+
 MidiNote MidiMapper::MapNote(MidiNote &noteIn) {
     uint32_t h = noteIn.hash();
 
@@ -109,4 +124,37 @@ MidiNote MidiMapper::MapNote(MidiNote &noteIn) {
     mapped.velocity = noteIn.velocity;
 
     return mapped;
+}
+
+bool MidiMapper::IsNoteSinked(MidiNote &noteIn) {
+    uint32_t h = noteIn.hash();
+
+    return m_sinked_notes.contains(h);
+}
+
+void MidiMapper::AddSinkedNote(const MidiNote &note) {
+    m_sinked_notes[note.hash()] = note;
+}
+
+void MidiMapper::CreateThroughNoteSink(Json::Value data) {
+    uint8_t b_baseChannel = data["range_low"][0].asInt();
+    uint8_t b_highChannel = data["range_high"][0].asInt();
+
+    uint8_t b_baseNote = data["range_low"][1].asInt();
+    uint8_t b_highNote = data["range_high"][1].asInt();
+
+    uint8_t delta_channel = std::abs(b_baseChannel - b_highChannel) + 1;
+    uint8_t delta_notes = std::abs(b_baseNote - b_highNote) + 1;
+
+    for(uint8_t c = 0; c < delta_channel; c++) {
+        for(uint8_t n = 0; n < delta_notes; n++) {
+            MidiNote base = {
+                    .channel = (uint8_t)(c + b_baseChannel),
+                    .note = (uint8_t)(n + b_baseNote),
+                    .velocity = 0
+            };
+
+            AddSinkedNote(base);
+        }
+    }
 }

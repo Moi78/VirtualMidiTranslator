@@ -31,16 +31,22 @@ public:
     MidiMapper() = default;
     ~MidiMapper() = default;
 
+    bool IsNoteSinked(MidiNote& noteIn);
     MidiNote MapNote(MidiNote& noteIn);
 
     void AddMappedNote(const MidiNote& noteBase, const MidiNote& translated);
+    void AddSinkedNote(const MidiNote& note);
     void LoadMappingConfig(std::string filepath);
 
 private:
     void CreateSingleNoteMap(Json::Value data);
     void CreateThroughNoteMap(Json::Value data);
 
+    void CreateSingleNoteSink(Json::Value data);
+    void CreateThroughNoteSink(Json::Value data);
+
     std::unordered_map<uint32_t, MidiNote> m_mapping;
+    std::unordered_map<uint32_t, MidiNote> m_sinked_notes;
 };
 
 
